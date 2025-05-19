@@ -44,16 +44,28 @@ def parse_response(text: str) -> dict:
             "summary": "",
         }
         
-        # Split the text into sections
-        sections = text.split("\n\n")
+        # Split the text into sections using markdown headers
+        parts = text.split("**")
         
-        for section in sections:
-            if "statute" in section.lower():
-                result["statute"] = section.split("Statute:")[1].strip()
-            elif "precedent" in section.lower():
-                result["precedent"] = section.split("Precedent:")[1].strip()
-            elif "summary" in section.lower():
-                result["summary"] = section.split("Summary:")[1].strip()
+        for i in range(len(parts) - 1):
+            header = parts[i].strip()
+            content = parts[i + 1].split("**")[0].strip()
+            
+            if "Statute" in header:
+                result["statute"] = content
+            elif "Precedent" in header:
+                result["precedent"] = content
+            elif "Summary" in header:
+                result["summary"] = content
+        
+        # Clean up the content by removing markdown symbols
+        for key in result:
+            if result[key]:
+                result[key] = result[key].replace("\n", " ").strip()
+                if result[key].startswith("- "):
+                    result[key] = result[key][2:].strip()
+                if result[key].startswith("• "):
+                    result[key] = result[key][2:].strip()
         
         # If any section is empty, return a default message
         for key in result:

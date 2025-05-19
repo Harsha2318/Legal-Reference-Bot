@@ -17,11 +17,29 @@ if st.button("Search"):
                 res = requests.post("http://localhost:8000/search/", json={"query": query})
                 if res.status_code == 200:
                     data = res.json()
-                    st.success("Legal Information Retrieved!")
-                    st.markdown(f"**📜 Statute:** {data['statute']}")
-                    st.markdown(f"**⚖️ Precedent:** {data['precedent']}")
-                    st.markdown(f"**🧠 Summary:** {data['summary']}")
+                    
+                    # Check if we got an error response
+                    if "error" in data:
+                        st.error(f"Error: {data['error']}")
+                        if "raw_response" in data:
+                            st.text("Raw response from API:")
+                            st.code(data['raw_response'])
+                    else:
+                        st.success("Legal Information Retrieved!")
+                        
+                        # Display each section if available
+                        if data.get('statute', '').strip():
+                            st.markdown(f"**📜 Statute:** {data['statute']}")
+                        if data.get('precedent', '').strip():
+                            st.markdown(f"**⚖️ Precedent:** {data['precedent']}")
+                        if data.get('summary', '').strip():
+                            st.markdown(f"**🧠 Summary:** {data['summary']}")
+                        
+                        # If no sections were found
+                        if not any(data.get(key, '').strip() for key in ['statute', 'precedent', 'summary']):
+                            st.warning("No information could be retrieved for this query.")
                 else:
-                    st.error("Failed to retrieve data. Please try again.")
+                    st.error(f"API returned status code {res.status_code}")
             except Exception as e:
                 st.error(f"Error: {str(e)}")
+                st.text("Please try again with a different query.")
