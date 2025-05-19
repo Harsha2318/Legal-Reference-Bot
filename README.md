@@ -1,6 +1,6 @@
 # Legal Reference Bot
 
-A powerful legal research assistant that combines FastAPI, Gemini Pro AI, and Streamlit to provide instant access to legal precedents, statutes, and case law.
+A powerful legal research assistant that combines FastAPI, Gemini Pro AI, and Streamlit to provide instant access to legal precedents, statutes, and case law
 
 ## Features
 
