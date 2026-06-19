@@ -2,6 +2,9 @@
 
 A powerful legal research assistant that combines FastAPI, Gemini Pro AI, and Streamlit to provide instant access to legal precedents, statutes, and case law
 
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/f34b5156-c194-456a-bc08-6917554aa186" />
+
+
 ## Features
 
 - Instant legal research using Gemini Pro AI
